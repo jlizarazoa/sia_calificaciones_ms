@@ -1,45 +1,12 @@
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Course, Grade, History
-from .serializers import GradeSerializer, CourseSerializer, HistorySerializer
+from .models import Asignature, Grade, History
+from .serializers import GradeSerializer, AsignatureSerializer, HistorySerializer
 from rest_framework import serializers
 from rest_framework import status
 import logging
 logger = logging.getLogger('django')
-
-#ALL VIEW
-@api_view(['GET'])
-def All(request):
-    api_urls = {
-        'all_items': '/',
-        'Search by Course': '/?id_course=cour_id'
-    }
-@api_view(['GET'])
-def listAll(request):
-    # checking for the parameters from the URL
-    if request.query_params:
-        grades = Grade.objects.filter(**request.query_params.dict())
-        course = Course.objects.filter(**request.query_params.dict())
-        history = History.objects.filter(**request.query_params.dict())
-        
-    else:
-        grades = Grade.objects.all()
-        course = Course.objects.all()
-        history = History.objects.all()
-    
-    # if there is something in items else raise error
-    if grades and course and history:
-        serializerG = GradeSerializer(grades, many=True)
-        serializerC = CourseSerializer(course, many=True)
-        serializerH = HistorySerializer(history, many=True)
-
-        return Response({'Histories': serializerH.data, 'Grades': serializerG.data, 'Courses': serializerG.data})
-
-    else:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    
-
 
 #GRADES VIEW
 @api_view(['GET'])
@@ -47,7 +14,7 @@ def grades(request):
     api_urls = {
         'all_items': '/',
         'Search by Id': '/?id=grade_id',
-        'Search by Course': '/?id_course=cour_id',
+        'Search by Asignature': '/?id_asignature=asig_id',
         'Add': '/create',
         'Update': '/update/ ',
         'Delete': '/item/pk/delete'
@@ -83,6 +50,8 @@ def createGrades(request):
         return Response(grade.data)
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    return Response(grade.data)
 
 @api_view(['PUT'])
 def updateGrades(request, pk):
@@ -103,17 +72,17 @@ def deleteGrades(request, pk):
     return Response(status=status.HTTP_202_ACCEPTED)
 
 #Function to return asignature type
-def retrieve(id_cor):
-    course = Course.objects.get(id=id_cor)
-    serializer = CourseSerializer(course)
+def retrieve(id_asig):
+    asignature = Asignature.objects.get(id=id_asig)
+    serializer = AsignatureSerializer(asignature)
     return serializer.data
 
-#COURSE VIEW
+#ASIGNATURES VIEW
 @api_view(['GET'])
-def courses(request):
+def asignatures(request):
     api_urls = {
         'all_items': '/',
-        'Search by Id': '/?id=cour_id',
+        'Search by Id': '/?id=asig_id',
         'Search by Term': '/?term=term_val',
         'Add': '/create',
         'Update': '/update/pk',
@@ -121,35 +90,35 @@ def courses(request):
     }
 
 @api_view(['GET'])
-def listCourse(request):
+def listAsignature(request):
 
     # checking for the parameters from the URL
     if request.query_params:
-        course = Course.objects.filter(**request.query_params.dict())
+        asignature = Asignature.objects.filter(**request.query_params.dict())
     else:
-        course = Course.objects.all()
+        asignature = Asignature.objects.all()
 
     # if there is something in items else raise error
-    if course:
-        serializer = CourseSerializer(course, many=True)
+    if asignature:
+        serializer = AsignatureSerializer(asignature, many=True)
         return Response(serializer.data)
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['POST'])
-def createCourse(request):
-    course = CourseSerializer(data=request.data)
+def createAsignature(request):
+    asignature = AsignatureSerializer(data=request.data)
     
-    if course.is_valid():
-        course.save()
-        return Response(course.data)
+    if asignature.is_valid():
+        asignature.save()
+        return Response(asignature.data)
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['PUT'])
-def updateCourse(request, pk):
-    asignature = Course.objects.get(pk=pk)
-    serializer = CourseSerializer(instance=asignature, data=request.data)
+def updateAsignature(request, pk):
+    asignature = Asignature.objects.get(pk=pk)
+    serializer = AsignatureSerializer(instance=asignature, data=request.data)
   
     if serializer.is_valid():
         serializer.save()
@@ -157,9 +126,10 @@ def updateCourse(request, pk):
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
+
 @api_view(['DELETE'])
-def deleteCourse(request, pk):
-    asignature = Course.objects.get(pk=pk)
+def deleteAsignature(request, pk):
+    asignature = Asignature.objects.get(pk=pk)
     asignature.delete()
     return Response(status=status.HTTP_202_ACCEPTED)
 

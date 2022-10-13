@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-zm63!i%(+o3ym1)vt4a9r%@5k5o*))a-(3j3(^ychwk#l&az$7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -82,7 +82,7 @@ DATABASES = {
       'NAME': 'SIA_InfoAcademica_db',
 
       'CLIENT': {
-          'host': 'host.docker.internal',
+          'host': 'mongodb://mongodb:27017',
       }
   }
 }

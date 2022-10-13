@@ -20,4 +20,5 @@ services:
       - .:/app
     depends_on:
       - sia_infoacademica_db
+
   
