@@ -1,12 +1,37 @@
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Asignature, Grade, History
-from .serializers import GradeSerializer, AsignatureSerializer, HistorySerializer
+from .models import Course, Grade, History
+from .serializers import GradeSerializer, CourseSerializer, HistorySerializer
 from rest_framework import serializers
 from rest_framework import status
 import logging
 logger = logging.getLogger('django')
+
+#ALL VIEW
+@api_view(['GET'])
+def all(request):
+    api_urls = {
+        'all_items': '/'
+    }
+@api_view(['GET'])
+def listAll(request):
+    # checking for the parameters from the URL
+    grades = Grade.objects.all()
+    course = Course.objects.all()
+    history = History.objects.all()
+    
+    # if there is something in items else raise error
+    if grades and course and history:
+        serializerG = GradeSerializer(grades, many=True)
+        serializerC = CourseSerializer(course, many=True)
+        serializerH = HistorySerializer(history, many=True)
+
+        return Response({'Histories': serializerH.data, 'Grades': serializerG.data, 'Courses': serializerC.data})
+
+    else:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
 
 #GRADES VIEW
 @api_view(['GET'])
@@ -14,7 +39,7 @@ def grades(request):
     api_urls = {
         'all_items': '/',
         'Search by Id': '/?id=grade_id',
-        'Search by Asignature': '/?id_asignature=asig_id',
+        'Search by Course': '/?id_course=cour_id',
         'Add': '/create',
         'Update': '/update/ ',
         'Delete': '/item/pk/delete'
@@ -73,13 +98,13 @@ def deleteGrades(request, pk):
 
 #Function to return asignature type
 def retrieve(id_asig):
-    asignature = Asignature.objects.get(id=id_asig)
-    serializer = AsignatureSerializer(asignature)
+    courses = Course.objects.get(id=id_asig)
+    serializer = CourseSerializer(courses)
     return serializer.data
 
 #ASIGNATURES VIEW
 @api_view(['GET'])
-def asignatures(request):
+def courses(request):
     api_urls = {
         'all_items': '/',
         'Search by Id': '/?id=asig_id',
@@ -90,35 +115,35 @@ def asignatures(request):
     }
 
 @api_view(['GET'])
-def listAsignature(request):
+def listCourse(request):
 
     # checking for the parameters from the URL
     if request.query_params:
-        asignature = Asignature.objects.filter(**request.query_params.dict())
+        course = Course.objects.filter(**request.query_params.dict())
     else:
-        asignature = Asignature.objects.all()
+        course = Course.objects.all()
 
     # if there is something in items else raise error
-    if asignature:
-        serializer = AsignatureSerializer(asignature, many=True)
+    if course:
+        serializer = CourseSerializer(course, many=True)
         return Response(serializer.data)
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['POST'])
-def createAsignature(request):
-    asignature = AsignatureSerializer(data=request.data)
+def createCourse(request):
+    course = CourseSerializer(data=request.data)
     
-    if asignature.is_valid():
-        asignature.save()
-        return Response(asignature.data)
+    if course.is_valid():
+        course.save()
+        return Response(course.data)
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['PUT'])
-def updateAsignature(request, pk):
-    asignature = Asignature.objects.get(pk=pk)
-    serializer = AsignatureSerializer(instance=asignature, data=request.data)
+def updateCourse(request, pk):
+    course = Course.objects.get(pk=pk)
+    serializer = CourseSerializer(instance=course, data=request.data)
   
     if serializer.is_valid():
         serializer.save()
@@ -128,9 +153,9 @@ def updateAsignature(request, pk):
 
 
 @api_view(['DELETE'])
-def deleteAsignature(request, pk):
-    asignature = Asignature.objects.get(pk=pk)
-    asignature.delete()
+def deleteCourse(request, pk):
+    course = Course.objects.get(pk=pk)
+    course.delete()
     return Response(status=status.HTTP_202_ACCEPTED)
 
 

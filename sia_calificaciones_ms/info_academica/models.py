@@ -4,9 +4,10 @@ from djongo import models
 
 #Principal clases
 
-class Asignature(models.Model):
+class Course(models.Model):
 
     id = models.IntegerField(primary_key = True)
+    id_asignature = models.IntegerField(default = 0)
     term = models.CharField(max_length = 6)
     consolidated = models.BooleanField()
 
@@ -23,11 +24,10 @@ class History(models.Model):
 class Grade(models.Model):
 
     id = models.IntegerField(primary_key = True)
-    id_asignature = models.IntegerField(default=0)
+    id_course = models.IntegerField(default=0)
     name = models.CharField(max_length = 60)
     percentage = models.FloatField()
-    id_students = models.CharField(max_length = 60)
-    values = models.FloatField(default = 0)
+    grades = models.JSONField(default={})
 
 
 

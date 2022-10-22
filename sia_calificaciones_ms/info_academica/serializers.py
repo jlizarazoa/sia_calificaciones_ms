@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from .models import Grade
-from .models import Asignature
+from .models import Course, Grade
 from .models import History
 
 class GradeSerializer(serializers.ModelSerializer):
@@ -9,9 +8,9 @@ class GradeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class AsignatureSerializer(serializers.ModelSerializer):
+class CourseSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Asignature
+        model = Course
         fields = '__all__'
 
 
