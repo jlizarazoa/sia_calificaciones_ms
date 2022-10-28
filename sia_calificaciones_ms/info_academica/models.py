@@ -1,6 +1,7 @@
 from email.policy import default
 from django.core.validators import MaxValueValidator, MinValueValidator
 from djongo import models
+import json
 
 #Principal clases
 
@@ -27,7 +28,7 @@ class Grade(models.Model):
     id_course = models.IntegerField(default=0)
     name = models.CharField(max_length = 60)
     percentage = models.FloatField()
-    grades = models.JSONField(default={})
+    grades = models.CharField(max_length = 6000)
 
 
 
