@@ -76,7 +76,6 @@ def createGrades(request):
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
-    return Response(grade.data)
 
 @api_view(['PUT'])
 def updateGrades(request, pk):

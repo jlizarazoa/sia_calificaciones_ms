@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-zm63!i%(+o3ym1)vt4a9r%@5k5o*))a-(3j3(^ychwk#l&az$7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['host.docker.internal', '127.0.0.1']
+ALLOWED_HOSTS = ['host.docker.internal', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -78,11 +78,11 @@ WSGI_APPLICATION = 'sia_calificaciones_ms.wsgi.application'
 
 DATABASES = {
     'default': {
-      'ENGINE': 'djongo',
-      'NAME': 'SIA_InfoAcademica_db',
-
-      'CLIENT': {
-          'host': 'host.docker.internal',
+        'ENGINE': 'djongo',
+        'NAME': 'SIA_InfoAcademica_db',
+        'ENFORCE_SCHEMA': False,
+        'CLIENT': {
+          'host': 'mongodb+srv://sia_user2022:sia_db_archisoft_2E@sia.ylyd43y.mongodb.net/test',
       }
   }
 }
