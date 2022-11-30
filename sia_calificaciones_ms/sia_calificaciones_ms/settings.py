@@ -82,7 +82,7 @@ DATABASES = {
         'NAME': 'SIA_InfoAcademica_db',
         'ENFORCE_SCHEMA': False,
         'CLIENT': {
-          'host': 'mongodb+srv://sia_user2022:sia_db_archisoft_2E@sia.ylyd43y.mongodb.net/test',
+          'host': 'mongodb://sia_user2022:sia_db_archisoft_2E@sia-session-db-vm.us-central1-a.c.siaprjtestonline.internal:27017/?authSource=admin',
       }
   }
 }
