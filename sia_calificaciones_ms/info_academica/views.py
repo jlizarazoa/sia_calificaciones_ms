@@ -163,7 +163,7 @@ def deleteCourse(request, pk):
 def history(request):
     api_urls = {
         'all_items': '/',
-        'Search by Id': '/?id=history_id',
+        'Search by Id': '/?id_student=std_id',
         'Search by Program': '/?id_program=prog_id',
         'Add': '/create',
         'Update': '/update/pk',
